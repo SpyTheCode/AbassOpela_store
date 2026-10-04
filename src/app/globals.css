@@ -1,26 +1,459 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ---------------------------------------------------------------------------
+   Abass Opela — design tokens.
+   Editorial, gallery-like: warm gallery white, ink black, a single brass
+   accent. Type pairing: Cormorant Garamond (display serif) + Inter (UI).
+--------------------------------------------------------------------------- */
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  --font-sans: var(--font-inter), Inter, system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+:root {
+  --background: #faf8f4;
+  --foreground: #131110;
+
+  /* ink scale */
+  --ink-1: #131110;
+  --ink-2: #433f3b;
+  --ink-3: #6e6862;
+  --line: #e3ddd2;
+  --line-strong: #cfc7b8;
+
+  /* brass accent */
+  --brass: #a4762a;
+  --brass-deep: #7d5817;
+  --brass-soft: #f3ead7;
+
+  /* surfaces */
+  --paper: #faf8f4;
+  --card: #ffffff;
+  --wash: #f1ece2;
+
+  --danger: #a13327;
+  --ok: #2e6b4f;
+
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-ink: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-brass: var(--brass);
+  --color-brass-deep: var(--brass-deep);
+  --color-brass-soft: var(--brass-soft);
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-wash: var(--wash);
+  --color-danger: var(--danger);
+  --color-ok: var(--ok);
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink-1);
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--brass-soft);
+  color: var(--brass-deep);
+}
+
+/* Display serif utility */
+.font-display {
+  font-family: var(--font-display);
+}
+
+/* Eyebrow label — small caps with generous tracking */
+.eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-3);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  padding: 0.8rem 1.6rem;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 160ms ease, color 160ms ease,
+    border-color 160ms ease, opacity 160ms ease;
+}
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.btn-solid {
+  background: var(--ink-1);
+  color: var(--paper);
+}
+.btn-solid:hover:not(:disabled) {
+  background: var(--brass-deep);
+}
+.btn-outline {
+  border-color: var(--ink-1);
+  color: var(--ink-1);
+  background: transparent;
+}
+.btn-outline:hover:not(:disabled) {
+  background: var(--ink-1);
+  color: var(--paper);
+}
+.btn-brass {
+  background: var(--brass);
+  color: #fff;
+}
+.btn-brass:hover:not(:disabled) {
+  background: var(--brass-deep);
+}
+.btn-danger {
+  border-color: var(--danger);
+  color: var(--danger);
+  background: transparent;
+}
+.btn-danger:hover:not(:disabled) {
+  background: var(--danger);
+  color: #fff;
+}
+.btn-sm {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.6875rem;
+}
+
+/* Form fields */
+.field-label {
+  display: block;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: var(--ink-2);
+  margin-bottom: 0.4rem;
+}
+.input {
+  width: 100%;
+  background: var(--card);
+  border: 1px solid var(--line-strong);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.9375rem;
+  color: var(--ink-1);
+  outline: none;
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+.input:focus-visible {
+  border-color: var(--brass);
+  box-shadow: 0 0 0 3px var(--brass-soft);
+}
+.input::placeholder {
+  color: #a49c90;
+}
+
+/* Notice banners */
+.notice {
+  border: 1px solid var(--line-strong);
+  background: var(--card);
+  padding: 0.7rem 1rem;
+  font-size: 0.875rem;
+}
+.notice-error {
+  border-color: #dcb4ad;
+  background: #faf1ef;
+  color: var(--danger);
+}
+.notice-ok {
+  border-color: #bcd6c9;
+  background: #eff6f1;
+  color: var(--ok);
+}
+
+/* Editorial link with animated underline */
+.link-underline {
+  position: relative;
+  text-decoration: none;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 260ms ease;
+}
+.link-underline:hover::after,
+.link-underline[aria-current="page"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Focus visibility for keyboard users */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 2px;
+}
+
+/* Masonry via CSS columns */
+.masonry {
+  column-gap: 1.25rem;
+}
+.masonry > * {
+  break-inside: avoid;
+  margin-bottom: 1.25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Thin elegant scrollbar for horizontal film strips */
+.filmstrip {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+/* Scroll-triggered entrances keep the original layout and reading order. */
+.scroll-reveal {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+  transition:
+    opacity 650ms ease,
+    transform 650ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.scroll-reveal-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Native horizontal scrolling keeps carousels swipeable without a library. */
+.card-carousel {
+  min-width: 0;
+}
+.card-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+}
+.card-carousel-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.25rem;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 0.25rem;
+  padding: 0.25rem 0.25rem 0.25rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+.card-carousel-track::-webkit-scrollbar {
+  height: 5px;
+}
+.card-carousel-track::-webkit-scrollbar-track {
+  background: transparent;
+}
+.card-carousel-track::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: var(--line-strong);
+}
+.card-carousel-slide {
+  flex: 0 0 86%;
+  min-width: 0;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+.carousel-slide-third {
+  flex-basis: 80%;
+}
+.carousel-slide-sixth {
+  flex-basis: 42%;
+}
+.carousel-slide-gallery {
+  flex-basis: 82%;
+}
+.carousel-slide-wide {
+  flex-basis: 100%;
+}
+.carousel-arrow {
+  display: inline-flex;
+  width: 2.6rem;
+  height: 2.6rem;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-1);
+  font-size: 1.2rem;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+.carousel-play-toggle {
+  padding: 0 0.75rem;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-2);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  transition: color 180ms ease, background-color 180ms ease, border-color 180ms ease;
+}
+.carousel-play-toggle:hover {
+  border-color: var(--ink-1);
+  background: var(--ink-1);
+  color: var(--paper);
+}
+.carousel-arrow:hover {
+  border-color: var(--ink-1);
+  background: var(--ink-1);
+  color: var(--paper);
+}
+.bg-ink .carousel-arrow {
+  border-color: rgb(255 255 255 / 35%);
+  color: var(--paper);
+}
+.bg-ink .carousel-arrow:hover {
+  background: var(--paper);
+  color: var(--ink-1);
+}
+.card-carousel-track:focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+}
+
+/* A localized expanding ring gives the editorial hero a water-drop response. */
+.hero-water-surface {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  touch-action: pan-y;
+}
+.hero-water-image {
+  transition: transform 1000ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.hero-copy {
+  z-index: 2;
+  animation: hero-copy-enter 800ms 120ms both cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.hero-water-surface:hover .hero-water-image {
+  transform: scale(1.015);
+}
+.hero-water-ripple {
+  position: absolute;
+  z-index: 1;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+.hero-water-ripple::before,
+.hero-water-ripple::after {
+  position: absolute;
+  inset: 0;
+  width: 4rem;
+  height: 4rem;
+  border: 2px solid rgb(255 255 255 / 88%);
+  border-radius: 50%;
+  content: "";
+  box-shadow:
+    0 0 0 1px rgb(15 12 8 / 50%),
+    0 0 16px rgb(255 255 255 / 55%);
+  transform: translate(-50%, -50%) scale(0.2);
+  animation: water-ripple 1.25s ease-out forwards;
+  mix-blend-mode: screen;
+}
+.hero-water-ripple::after {
+  animation-delay: 130ms;
+  border-color: rgb(255 255 255 / 62%);
+  box-shadow: 0 0 0 1px rgb(15 12 8 / 42%);
+}
+
+@keyframes water-ripple {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(5);
+  }
+}
+
+@keyframes hero-copy-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (min-width: 640px) {
+  .carousel-slide-third {
+    flex-basis: 52%;
+  }
+  .carousel-slide-sixth {
+    flex-basis: 28%;
+  }
+  .carousel-slide-gallery {
+    flex-basis: 46%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .carousel-slide-third {
+    flex-basis: 44%;
+  }
+  .carousel-slide-sixth {
+    flex-basis: 17%;
+  }
+  .carousel-slide-gallery {
+    flex-basis: 31%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-copy {
+    animation: none;
+  }
+  .hero-water-image {
+    transition: none;
+  }
 }
